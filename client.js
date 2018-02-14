@@ -95,9 +95,9 @@ async function resolvePromises(promises) {
     
     await Promise.all(list)
     await deferWait()
-    await waitForSubscriptionsToBeReady()
     
-    if (promises.length) {
+    const ready = (promises.length === 0 && allSubscriptionAreReady())
+    if (!ready) {
         await resolvePromises(promises)
     }
 }
