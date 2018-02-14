@@ -36,7 +36,6 @@ function waitForSubscriptionsToBeReady() {
  * Patch original Module.prototype.dynamicImport function to track all imported modules
  * Creates promise for each import call and resolves it when module is ready
  */
-
 const importPromises = []
 
 function patchDynamicImport() {
