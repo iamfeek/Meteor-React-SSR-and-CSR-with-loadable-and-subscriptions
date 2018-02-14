@@ -82,6 +82,7 @@ onPageLoad(async () => {
     
     // if we have server side rendered markup
     // display it and render react dom into temporary hidden dom node
+    // NOTE: be aware that portals can escape this hidden node and show up before
     const temp = document.createElement("div")
     temp.id = "app"
     render(<App/>, temp)
