@@ -51,13 +51,13 @@ Meteor.subscribe = function (...args) {
 const promises = []
 
 function patchDynamicImport() {
-const Module = module.constructor
-const originalImport = Module.prototype.dynamicImport
-Module.prototype.dynamicImport = function (...args) {
-    const promise = originalImport.call(this, ...args)
-    promises.push(promise)
-    return promise
-}
+    const Module = module.constructor
+    const originalImport = Module.prototype.dynamicImport
+    Module.prototype.dynamicImport = function (...args) {
+        const promise = originalImport.call(this, ...args)
+        promises.push(promise)
+        return promise
+    }
 }
 
 patchDynamicImport()
