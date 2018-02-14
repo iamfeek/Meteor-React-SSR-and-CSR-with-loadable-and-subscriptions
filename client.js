@@ -1,5 +1,6 @@
 export * from "./lib/rootComponent"
 
+import { onPageLoad } from "meteor/server-render"
 import React from "react"
 import { render } from "react-dom"
 import { getRootComponent } from "./lib/rootComponent"
@@ -59,7 +60,7 @@ Module.prototype.dynamicImport = function (...args) {
 /**
  * Client side render
  */
-async function renderApp() {
+onPageLoad(async () => {
     // our root component
     const App = getRootComponent()
     
@@ -87,9 +88,7 @@ async function renderApp() {
     
     // swap dom node
     element.parentNode.replaceChild(temp, element)
-}
-
-Meteor.defer(renderApp)
+})
 
 
 async function resolvePromises(promises) {
