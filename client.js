@@ -81,7 +81,7 @@ onPageLoad(async () => {
     }
     
     // if we have server side rendered markup
-    // display it and render react dom into temporary dom node
+    // display it and render react dom into temporary hidden dom node
     const temp = document.createElement("div")
     temp.id = "app"
     render(<App/>, temp)
