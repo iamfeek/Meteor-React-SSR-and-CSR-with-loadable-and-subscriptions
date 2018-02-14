@@ -50,6 +50,7 @@ Meteor.subscribe = function (...args) {
 
 const promises = []
 
+function patchDynamicImport() {
 const Module = module.constructor
 const originalImport = Module.prototype.dynamicImport
 Module.prototype.dynamicImport = function (...args) {
@@ -57,6 +58,9 @@ Module.prototype.dynamicImport = function (...args) {
     promises.push(promise)
     return promise
 }
+}
+
+patchDynamicImport()
 
 /**
  * Client side render
