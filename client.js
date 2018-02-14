@@ -5,8 +5,6 @@ import React from "react"
 import { render } from "react-dom"
 import { getRootComponent } from "./lib/rootComponent"
 
-const promises = []
-
 /**
  * Patch original Meteor.subscribe function to track all subscription handles
  * Creates promise for each subscription and resolves it when subscription is ready
@@ -49,6 +47,9 @@ Meteor.subscribe = function (...args) {
  * Patch original Module.prototype.dynamicImport function to track all imported modules
  * Creates promise for each import call and resolves it when module is ready
  */
+
+const promises = []
+
 const Module = module.constructor
 const originalImport = Module.prototype.dynamicImport
 Module.prototype.dynamicImport = function (...args) {
