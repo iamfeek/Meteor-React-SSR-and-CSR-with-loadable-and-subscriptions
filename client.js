@@ -37,14 +37,14 @@ function waitForSubscriptionsToBeReady() {
  * Creates promise for each import call and resolves it when module is ready
  */
 
-const promises = []
+const importPromises = []
 
 function patchDynamicImport() {
     const Module = module.constructor
     const originalImport = Module.prototype.dynamicImport
     Module.prototype.dynamicImport = function (...args) {
         const promise = originalImport.call(this, ...args)
-        promises.push(promise)
+        importPromises.push(promise)
         return promise
     }
 }
@@ -78,7 +78,7 @@ onPageLoad(async () => {
     render(<App/>, temp)
     
     // wait until we loaded all the things
-    await resolvePromises(promises)
+    await resolvePromises(importPromises)
     
     // swap dom node
     element.parentNode.replaceChild(temp, element)
