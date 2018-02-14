@@ -30,7 +30,7 @@ import { setRootComponent } from "meteor/pravdomil:react-render"
 setRootComponent(App)
 
 function App() {
-    return "Hello"
+  return "Hello"
 }
 ```
 
