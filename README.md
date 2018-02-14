@@ -3,25 +3,36 @@ As discussed on [StackOverflow](https://stackoverflow.com/questions/48567599/met
 
 Alternatives [first](https://github.com/ssrwpo/ssr), [second](https://github.com/thereactivestack-legacy/meteor-react-router-ssr).
 
-## Usage
-
-Install:
+## Install
 ```sh
 npm i react react-dom react-loadable
 meteor add pravdomil:react-render
 ```
 
-Use:
+## API
+There is only one function to call `setRootComponent(YouRootReactComponent)` **do that on server and client**.
+
+## Example
 ```jsx
-import { setRootComponent } from "meteor/pravdomil:react-render"
-
-function App() {
-  return "hello"
-}
-
-setRootComponent(App)
+// client/main.js
+import "../imports"
 ```
 
-Donate:
+```jsx
+// server/main.js
+import "../imports"
+```
 
+```jsx
+// imports/index.js
+import { setRootComponent } from "meteor/pravdomil:react-render"
+
+setRootComponent(App)
+
+function App() {
+    return "Hello"
+}
+```
+
+## Donate
 [By buying a beer](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=BCL2X3AFQBAP2&item_name=react-render%20Beer).
