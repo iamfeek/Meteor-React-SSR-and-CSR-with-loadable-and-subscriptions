@@ -83,7 +83,6 @@ onPageLoad(async () => {
     element.parentNode.replaceChild(temp, element)
 })
 
-
 async function resolvePromises(promises) {
     let list = [waitForSubscriptionsToBeReady()]
     while (promises.length) {
