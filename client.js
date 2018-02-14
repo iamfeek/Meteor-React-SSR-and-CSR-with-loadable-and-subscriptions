@@ -1,46 +1,35 @@
 export * from "./lib/rootComponent"
 
 import { onPageLoad } from "meteor/server-render"
+import { Tracker } from "meteor/tracker"
 import React from "react"
 import { render } from "react-dom"
 import { getRootComponent } from "./lib/rootComponent"
 
 /**
- * Patch original Meteor.subscribe function to track all subscription handles
- * Creates promise for each subscription and resolves it when subscription is ready
+ * Returns a promise that is resolved after all subscriptions are ready
  */
-const originalSubscribe = Meteor.subscribe
-Meteor.subscribe = function (...args) {
-    let resolveFunc
-    const promise = new Promise((resolve, reject) => {
-        resolveFunc = resolve
+function waitForSubscriptionsToBeReady() {
+    return new Promise((resolve, reject) => {
+        Tracker.autorun(function (handle) {
+            const subscriptions = Meteor.connection._subscriptions
+            let allSubscriptionsReady = true
+            
+            for (subscription of Object.values(subscriptions)) {
+                if (subscription.ready) {
+                    continue
+                }
+                
+                allSubscriptionsReady = false
+                
+                subscription.readyDeps.depend()
+            }
+            
+            if (allSubscriptionsReady) {
+                resolve()
+            }
+        })
     })
-    promises.push(promise)
-    
-    let onReady, onError, onStop
-    
-    const lastArg = args[args.length - 1]
-    if (typeof lastArg === "function") {
-        onReady = lastArg
-        args.pop()
-    }
-    
-    if (typeof lastArg === "object") {
-        onReady = lastArg.onReady
-        onError = lastArg.onError
-        onStop = lastArg.onStop
-        args.pop()
-    }
-    
-    const originalOnReady = onReady
-    onReady = function (...args) {
-        resolveFunc()
-        if (originalOnReady) {
-            originalOnReady.call(this, ...args)
-        }
-    }
-    
-    return originalSubscribe.call(this, ...args, { onReady, onError, onStop })
 }
 
 /**
@@ -97,13 +86,14 @@ onPageLoad(async () => {
 
 
 async function resolvePromises(promises) {
-    let list = []
+    let list = [waitForSubscriptionsToBeReady()]
     while (promises.length) {
         list.push(promises.pop())
     }
     
     await Promise.all(list)
     await deferWait()
+    await checkSubscriptions()
     
     if (promises.length) {
         await resolvePromises(promises)
