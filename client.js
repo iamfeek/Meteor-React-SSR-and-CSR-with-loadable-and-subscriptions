@@ -32,6 +32,10 @@ function waitForSubscriptionsToBeReady() {
     })
 }
 
+function allSubscriptionAreReady() {
+    return Object.values(Meteor.connection._subscriptions).every(s => s.ready)
+}
+
 /**
  * Patch original Module.prototype.dynamicImport function to track all imported modules
  * Creates promise for each import call and resolves it when module is ready
