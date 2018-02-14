@@ -92,7 +92,7 @@ async function resolvePromises(promises) {
     
     await Promise.all(list)
     await deferWait()
-    await checkSubscriptions()
+    await waitForSubscriptionsToBeReady()
     
     if (promises.length) {
         await resolvePromises(promises)
