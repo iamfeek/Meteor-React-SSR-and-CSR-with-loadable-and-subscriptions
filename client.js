@@ -57,7 +57,7 @@ Module.prototype.dynamicImport = function (...args) {
 }
 
 /**
- * Server side render
+ * Client side render
  */
 async function renderApp() {
     // our root component

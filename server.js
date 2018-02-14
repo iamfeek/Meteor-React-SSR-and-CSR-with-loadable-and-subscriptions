@@ -18,7 +18,7 @@ Meteor.subscribe = function () {
 }
 
 /**
- * Client side render
+ * Server side render
  */
 onPageLoad(async sink => {
     // root dom node open tag
